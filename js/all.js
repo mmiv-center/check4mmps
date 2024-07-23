@@ -35,7 +35,8 @@ function dumpDataSet(dataSet, output) {
 		"x00291010": "CSAImageHeaderInfo",
 		"x00291018": "CSASeriesHeaderType",
 		"x00291019": "CSASeriesHeaderVersion",
-		"x00291020": "CSASeriesHeaderInfo"
+		"x00291020": "CSASeriesHeaderInfo",
+		"x00080060": "Modality"
 	};
 	var validElements = Object.keys(validElementNames);
 	
@@ -385,7 +386,8 @@ jQuery(document).ready(function() {
 								jQuery('#series-results').append(`<div class="col-sm-12 col-lg-3 col-md-4 series" 
                                                                            id="ser-${sanSeriesInstanceUID}" 
                                                                            style="background-color: ${cssRules['backgroundColor']}; color: ${cssRules['textColor']}">
-								     ${safetext(seriesObject[ks[i]]["SeriesDescription"])}
+								     ${seriesObject[ks[i]]["Modality"]} - 
+									 ${safetext(seriesObject[ks[i]]["SeriesDescription"])}
 								     <br>#files: ${seriesObject[ks[i]]["Files"]}
 								     <br>SeriesNumber: ${seriesObject[ks[i]]["SeriesNumber"]}
 								     <br>SequenceName: ${seriesObject[ks[i]]["SequenceName"]}
