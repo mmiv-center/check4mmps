@@ -1,5 +1,3 @@
-# ReviewZip
+# Verify if DICOM directory structure conforms to MMPS
 
-Show the content of a zip file including DICOM tags.
-
-![Application](https://mmiv-center.github.io/check4mmps/)
+Access the website here: [Application](https://mmiv-center.github.io/check4mmps/)
