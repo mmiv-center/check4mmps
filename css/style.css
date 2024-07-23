@@ -55,3 +55,11 @@
     overflow: hidden;
     /* display: inline-flex; */
 }
+
+#result {
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: scroll;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
