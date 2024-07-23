@@ -29,7 +29,13 @@ function dumpDataSet(dataSet, output) {
 		"x00180021": "SequenceVariant",
 		"x00180022": "ScanOptions",
 		"x00180023": "MRAcquisitionType",
-		"x00080090": "ReferringPhysician"
+		"x00080090": "ReferringPhysician",
+		"x00291008": "CSAImageHeaderType",
+		"x00291009": "CSAImageHeaderVersion",
+		"x00291010": "CSAImageHeaderInfo",
+		"x00291018": "CSASeriesHeaderType",
+		"x00291019": "CSASeriesHeaderVersion",
+		"x00291020": "CSASeriesHeaderInfo"
 	};
 	var validElements = Object.keys(validElementNames);
 	
