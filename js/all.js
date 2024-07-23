@@ -387,13 +387,12 @@ jQuery(document).ready(function() {
 								}
 								
 								jQuery('#series-results').append(`<div class="col-sm-12 col-lg-3 col-md-4 series" 
-                                                                           id="ser-${sanSeriesInstanceUID}" 
-                                                                           style="background-color: ${cssRules['backgroundColor']}; color: ${cssRules['textColor']}">
-								     ${seriesObject[ks[i]]["Modality"]} - 
-									 ${safetext(seriesObject[ks[i]]["SeriesDescription"])}
-								     <br>#files: ${seriesObject[ks[i]]["Files"]}
-								     <br>SeriesNumber: ${seriesObject[ks[i]]["SeriesNumber"]}
-								     <br>SequenceName: ${seriesObject[ks[i]]["SequenceName"]}
+                                                                           id="ser-${sanSeriesInstanceUID}">
+								     <span class="modality">${seriesObject[ks[i]]["Modality"]}</span>
+									 <span class="series_description">${safetext(seriesObject[ks[i]]["SeriesDescription"])}</span>
+								     <span class="num_files">#files: ${seriesObject[ks[i]]["Files"]}</span>
+								     <span class="series_number">SeriesNumber: ${seriesObject[ks[i]]["SeriesNumber"]}</span>
+								     <span class="sequence_name">SequenceName: ${seriesObject[ks[i]]["SequenceName"]}</span>
 								     </div>`);
 								}
 								console.log("finished on zip file");
