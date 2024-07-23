@@ -136,7 +136,7 @@ function dumpDataSet(dataSet, output) {
 						// (i.e. attribute is of type 2 or 3 ) so we only display the string if it has
 						// data.  Note that the length of the element will be 0 to indicate "no data"
 						// so we don't put anything here for the value in that case.
-						if (str !== undefined) {
+						if (typeof str !== "undefined") {
 							if (validElementNames[propertyName] == "SeriesInstanceUID") {
 								captureValues["SeriesInstanceUID"] = str;
 							}
@@ -152,7 +152,6 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "Modality") {
 								captureValues["Modality"] = str;
 							}
-							
 							
 							text += '"' + safetext(str) + '"';
 						}
