@@ -149,6 +149,9 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "SequenceName") {
 								captureValues["SequenceName"] = str;
 							}
+							if (validElementNames[propertyName] == "Modality") {
+								captureValues["Modality"] = str;
+							}
 							
 							
 							text += '"' + safetext(str) + '"';
