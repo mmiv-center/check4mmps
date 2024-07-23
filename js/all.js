@@ -187,7 +187,7 @@ function dumpDataSet(dataSet, output) {
 	}
 	if (typeof captureValues["SeriesInstanceUID"] !== "undefined"){
 		if (typeof seriesObject[captureValues["SeriesInstanceUID"]] == "undefined") {
-			seriesObject[captureValues["SeriesInstanceUID"]] = { "Files": 0, "SeriesNumber": captureValues["SeriesNumber"], "SeriesDescription": captureValues["SeriesDescription"], "SequenceName": captureValues["SequenceName"] };
+			seriesObject[captureValues["SeriesInstanceUID"]] = { "Files": 0, "SeriesNumber": captureValues["SeriesNumber"], "SeriesDescription": captureValues["SeriesDescription"], "SequenceName": captureValues["SequenceName"], "Modality": captureValues["Modality"] };
 		}
 		seriesObject[captureValues["SeriesInstanceUID"]]["Files"] += 1;
 	}
