@@ -62,4 +62,6 @@
     overflow-x: scroll;
     border: 1px solid grey;
     border-radius: 3px;
+    margin-bottom: 20px;
+    padding: 5px;
 }
