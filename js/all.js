@@ -48,6 +48,26 @@ function validate(seriesObject) {
 	jQuery('#icon-unique-identifiers').text("");
 	jQuery('#icon-unique-identifiers').append( (inspect?oked:failed) );
 
+	// check for CSA
+	var inspect = true;
+	for (var entry in seriesObject) {
+		if (seriesObject[entry]["Manufacturer"] == "SIEMENS" ) {
+			if (typeof seriesObject[entry]["CSAImageHeaderInfo"] == "undefined" || seriesObject[entry]["CSAImageHeaderInfo"].length == 0) {
+				inspect = false;
+				break;
+			}
+			if (typeof seriesObject[entry]["CSASeriesHeaderInfo"] == "undefined" || seriesObject[entry]["CSASeriesHeaderInfo"].length == 0) {
+				inspect = false;
+				break;
+			}
+		}
+	}
+	// update
+	jQuery('#icon-csa').children().remove();
+	jQuery('#icon-csa').text("");
+	jQuery('#icon-csa').append( (inspect?oked:failed) );
+
+
 }
 
 // This function iterates through dataSet recursively and adds new HTML strings
