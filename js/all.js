@@ -6,6 +6,50 @@ function isASCII(str) {
 
 var seriesObject = {};
 
+function validate(seriesObject) {
+	// inspect the seriesObject and update the assessment
+
+	var oked = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">	<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>  </svg>&nbsp;';
+	var failed = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bug" viewBox="0 0 16 16">                <path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A5 5 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A5 5 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623M4 7v4a4 4 0 0 0 3.5 3.97V7zm4.5 0v7.97A4 4 0 0 0 12 11V7zM12 6a4 4 0 0 0-1.334-2.982A3.98 3.98 0 0 0 8 2a3.98 3.98 0 0 0-2.667 1.018A4 4 0 0 0 4 6z"/>  </svg>&nbsp;';
+
+	// check for StudyDate
+	var inspect = true;
+	for (var entry in seriesObject) {
+
+		if (typeof seriesObject[entry]["StudyDate"] == "undefined" || seriesObject[entry]["StudyDate"].length == 0) {
+			inspect = false;
+			break;
+		}
+	}
+	// update
+	jQuery('#icon-study-date').children().remove();
+	jQuery('#icon-study-date').text("");
+	jQuery('#icon-study-date').append( (inspect?oked:failed) );
+
+	// check for UIDs
+	var inspect = true;
+	for (var entry in seriesObject) {
+
+		if (typeof seriesObject[entry]["StudyInstanceUID"] == "undefined" || seriesObject[entry]["StudyInstanceUID"].length == 0) {
+			inspect = false;
+			break;
+		}
+		if (typeof seriesObject[entry]["SeriesInstanceUID"] == "undefined" || seriesObject[entry]["SeriesInstanceUID"].length == 0) {
+			inspect = false;
+			break;
+		}
+		if (typeof seriesObject[entry]["SOPInstanceUID"] == "undefined" || seriesObject[entry]["SOPInstanceUID"].length == 0) {
+			inspect = false;
+			break;
+		}
+	}
+	// update
+	jQuery('#icon-unique-identifiers').children().remove();
+	jQuery('#icon-unique-identifiers').text("");
+	jQuery('#icon-unique-identifiers').append( (inspect?oked:failed) );
+
+}
+
 // This function iterates through dataSet recursively and adds new HTML strings
 // to the output array passed into it
 function dumpDataSet(dataSet, output) {
@@ -22,6 +66,7 @@ function dumpDataSet(dataSet, output) {
 		"x0020000e": "SeriesInstanceUID", // needed
 		"x0008103e": "SeriesDescription", // needed
 		"x0020000d": "StudyInstanceUID", // needed
+		"x00080018": "SOPInstanceUID", // needed
 		"x00080020": "StudyDate",        // needed
 		"x00080030": "StudyTime",
 		//"x00200013": "InstanceNumber",
@@ -38,7 +83,8 @@ function dumpDataSet(dataSet, output) {
 		"x00291018": "CSASeriesHeaderType",
 		"x00291019": "CSASeriesHeaderVersion",
 		"x00291020": "CSASeriesHeaderInfo",
-		"x00080060": "Modality" // needed
+		"x00080060": "Modality", // needed
+		"x00080070": "Manufacturer" // needed
 	};
 	var validElements = Object.keys(validElementNames);
 	
@@ -142,6 +188,12 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "SeriesInstanceUID") {
 								captureValues["SeriesInstanceUID"] = str;
 							}
+							if (validElementNames[propertyName] == "StudyInstanceUID") {
+								captureValues["StudyInstanceUID"] = str;
+							}
+							if (validElementNames[propertyName] == "SOPInstanceUID") {
+								captureValues["SOPInstanceUID"] = str;
+							}
 							if (validElementNames[propertyName] == "SeriesDescription") {
 								captureValues["SeriesDescription"] = str;
 							}
@@ -153,6 +205,23 @@ function dumpDataSet(dataSet, output) {
 							}
 							if (validElementNames[propertyName] == "Modality") {
 								captureValues["Modality"] = str;
+							}
+							if (validElementNames[propertyName] == "StudyDate") {
+								captureValues["StudyDate"] = str;
+							}
+							if (validElementNames[propertyName] == "PatientID") {
+								captureValues["PatientID"] = str;
+							}
+							if (validElementNames[propertyName] == "Manufacturer") {
+								captureValues["Manufacturer"] = str;
+							}
+							// CSAImageHeaderInfo
+							if (validElementNames[propertyName] == "CSAImageHeaderInfo") {
+								captureValues["CSAImageHeaderInfo"] = str.length;
+							}
+							// CSASeriesHeaderInfo
+							if (validElementNames[propertyName] == "CSASeriesHeaderInfo") {
+								captureValues["CSASeriesHeaderInfo"] = str.length;
 							}
 							
 							text += '"' + safetext(str) + '"';
@@ -191,7 +260,21 @@ function dumpDataSet(dataSet, output) {
 	}
 	if (typeof captureValues["SeriesInstanceUID"] !== "undefined"){
 		if (typeof seriesObject[captureValues["SeriesInstanceUID"]] == "undefined") {
-			seriesObject[captureValues["SeriesInstanceUID"]] = { "Files": 0, "SeriesNumber": captureValues["SeriesNumber"], "SeriesDescription": captureValues["SeriesDescription"], "SequenceName": captureValues["SequenceName"], "Modality": captureValues["Modality"] };
+			seriesObject[captureValues["SeriesInstanceUID"]] = { 
+				"Files": 0, 
+				"SeriesNumber": captureValues["SeriesNumber"], 
+				"SeriesDescription": captureValues["SeriesDescription"], 
+				"SequenceName": captureValues["SequenceName"], 
+				"Modality": captureValues["Modality"], 
+				"PatientID": captureValues["PatientID"], 
+				"StudyDate": captureValues["StudyDate"],
+				"Manufacturer": captureValues["Manufacturer"],
+				"SeriesInstanceUID": captureValues["SeriesInstanceUID"],
+				"StudyInstanceUID": captureValues["StudyInstanceUID"],
+				"SOPInstanceUID": captureValues["SOPInstanceUID"],
+				"CSASeriesHeaderInfo": captureValues["CSASeriesHeaderInfo"],
+				"CSAImageHeaderInfo": captureValues["CSAImageHeaderInfo"]
+			};
 		}
 		seriesObject[captureValues["SeriesInstanceUID"]]["Files"] += 1;
 	}
@@ -375,25 +458,20 @@ jQuery(document).ready(function() {
 							jQuery('#number-series').text(ks.length);
 							//alert(safetext('A newline: \n see?'));
 							
+							// 
+							validate(seriesObject);
 							
 							for (var i = 0; i < ks.length; i++) {
 								var sanSeriesInstanceUID = ks[i].replace(/\//g, "_").replace(/\./g, "_");
-								const cssRules = {};
-								if (i % 2 == 0) {
-									cssRules['backgroundColor'] = '#C8C8C8';
-									cssRules['textColor'] = '#212529';					
-								} else {
-									cssRules['backgroundColor'] = '#212529';
-									cssRules['textColor'] = '#C8C8C8';
-								}
 								
 								jQuery('#series-results').append(`<div class="col-sm-12 col-lg-3 col-md-4 series" 
                                                                            id="ser-${sanSeriesInstanceUID}">
-								     <span class="modality">${seriesObject[ks[i]]["Modality"]}</span>
-									 <span class="series_description">${safetext(seriesObject[ks[i]]["SeriesDescription"])}</span>
-								     <span class="num_files">#files: ${seriesObject[ks[i]]["Files"]}</span>
-								     <span class="series_number">SeriesNumber: ${seriesObject[ks[i]]["SeriesNumber"]}</span>
-								     <span class="sequence_name">SequenceName: ${seriesObject[ks[i]]["SequenceName"]}</span>
+								     <div class="modality">${seriesObject[ks[i]]["Modality"]}</div>
+									 <div class="patientid">PatientID: ${safetext(seriesObject[ks[i]]["PatientID"])}</div>
+									 <div class="series_description">${safetext(seriesObject[ks[i]]["SeriesDescription"])}</div>
+								     <div class="num_files">Number of files: ${seriesObject[ks[i]]["Files"]}</div>
+								     <div class="series_number">${seriesObject[ks[i]]["SeriesNumber"]}</div>
+								     <div class="sequence_name">SequenceName: ${seriesObject[ks[i]]["SequenceName"]}</div>
 								     </div>`
 								);
 							}

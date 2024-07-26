@@ -52,6 +52,7 @@
     padding: 5px;
     margin: 2px;
     overflow: hidden;
+    position: relative;
     /* display: inline-flex; */
 }
 
@@ -66,10 +67,29 @@
 }
 
 .modality {
-    height: 64px;
+    height: 34px;
     display: flex;
     align-items: center;
-    padding-left: 16px;
-    font-size: 14px;
+    padding-left: 0px;
+    font-size: 24px;
     letter-spacing: 0.125em;
+}
+
+.series_description {
+    padding-left: 5px;
+    font-size: 14px;
+    overflow-x: hidden;
+    font-style: italic;
+}
+
+.num_files, .sequence_name, .patientid {
+    padding-left: 5px;
+    font-size: 14px;
+    overflow-x: hidden;
+}
+
+.series_number {
+    position: absolute;
+    top: 0px;
+    right: 5px;
 }
