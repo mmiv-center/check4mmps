@@ -10,25 +10,27 @@ var seriesObject = {};
 // to the output array passed into it
 function dumpDataSet(dataSet, output) {
 	
+	// we need to check the following tags
+	// UIDs, SeriesDescription, StudyDate, PatientName, PatientID and Manufacturer 
 	var validElementNames = {
-		"x00100010": "PatientName",
-		"x00100020": "PatientID",
+		"x00100010": "PatientName", // needed
+		"x00100020": "PatientID", // needed
 		"x00100030": "PatientBirthDate",
 		"x00100040": "Sex",
 		"x00101010": "Age",
 		"x00200011": "SeriesNumber",
-		"x0020000e": "SeriesInstanceUID",
-		"x0008103e": "SeriesDescription",
-		"x0020000d": "StudyInstanceUID",
-		"x00080020": "StudyDate",
+		"x0020000e": "SeriesInstanceUID", // needed
+		"x0008103e": "SeriesDescription", // needed
+		"x0020000d": "StudyInstanceUID", // needed
+		"x00080020": "StudyDate",        // needed
 		"x00080030": "StudyTime",
-		"x00200013": "InstanceNumber",
-		"x00201041": "SliceLocation",
+		//"x00200013": "InstanceNumber",
+		//"x00201041": "SliceLocation",
 		"x00180024": "SequenceName",
 		"x00180020": "ScanningSequence",
 		"x00180021": "SequenceVariant",
 		"x00180022": "ScanOptions",
-		"x00180023": "MRAcquisitionType",
+		//"x00180023": "MRAcquisitionType",
 		"x00080090": "ReferringPhysician",
 		"x00291008": "CSAImageHeaderType",
 		"x00291009": "CSAImageHeaderVersion",
@@ -36,7 +38,7 @@ function dumpDataSet(dataSet, output) {
 		"x00291018": "CSASeriesHeaderType",
 		"x00291019": "CSASeriesHeaderVersion",
 		"x00291020": "CSASeriesHeaderInfo",
-		"x00080060": "Modality"
+		"x00080060": "Modality" // needed
 	};
 	var validElements = Object.keys(validElementNames);
 	
@@ -392,72 +394,71 @@ jQuery(document).ready(function() {
 								     <span class="num_files">#files: ${seriesObject[ks[i]]["Files"]}</span>
 								     <span class="series_number">SeriesNumber: ${seriesObject[ks[i]]["SeriesNumber"]}</span>
 								     <span class="sequence_name">SequenceName: ${seriesObject[ks[i]]["SequenceName"]}</span>
-								     </div>`);
-								}
-								console.log("finished on zip file");
-								
-								var loadingCounter = parseInt(jQuery("#loadingCounter").text());
-								loadingCounter = loadingCounter + 1;
-								jQuery("#loadingCounter").text(loadingCounter);
-								
-							});
-						})(sanID, zipEntry.name, counter);
-						counter++;
-					});
-				}, function (e) {
-					$result.append($("<div>", {
-						"class" : "alert alert-danger",
-						text : "Error reading " + f.name + ": " + e.message
-					}));
+								     </div>`
+								);
+							}
+							console.log("finished on zip file");
+							
+							var loadingCounter = parseInt(jQuery("#loadingCounter").text());
+							loadingCounter = loadingCounter + 1;
+							jQuery("#loadingCounter").text(loadingCounter);
+							
+						});
+					})(sanID, zipEntry.name, counter);
+					counter++;
 				});
-			}
-			
-			seriesObject = {};
-			var files = e.target.files;
-			for (var i = 0; i < files.length; i++) {
-				handleFile(files[i]);
-			}	
-		});
+			}, function (e) {
+				$result.append($("<div>", {
+					"class" : "alert alert-danger",
+					text : "Error reading " + f.name + ": " + e.message
+				}));
+			});
+		}
 		
-		// lazy load next `lazyLoadingLimit` number of entries
-		$(window).scroll(function() {
-			const scrollHeight = $(document).height();
-			const scrollPosition = $(window).height() + $(window).scrollTop();
-			
-			if ((scrollHeight - scrollPosition) < 10) {
-				const nextList = detailsList.splice(0, lazyLoadingLimit); // detailsList.slice(0, lazyLoadingLimit);
-				nextList.map(elem => {
-					var e = jQuery("<li class='image-group' id='" + elem['sanID'] + "'>[" + elem['num'] + "] " + elem['zipEntryName'] +
-						'<ul class="image">' + elem['htmlElem'] + '</ul>' + "</li>");
-						$('#results > ul').append(e);
-						
-						//$('#results > ul').append("<li class='image-group' id='" + elem['sanID'] + "'>[" + elem['num'] + "] " + elem['zipEntryName'] + "</li>");
-						//$('#' + elem['sanID']).append('<ul class="image">' + elem['htmlElem'] + '</ul>');
-					});
-					
-				}
-				
-				if (scrollPosition > 1200) {
-					$("#go-up-arrow").show();
-				} else {
-					$("#go-up-arrow").hide();
-				}
+		seriesObject = {};
+		var files = e.target.files;
+		for (var i = 0; i < files.length; i++) {
+			handleFile(files[i]);
+		}	
+	});
+	
+	// lazy load next `lazyLoadingLimit` number of entries
+	$(window).scroll(function() {
+		const scrollHeight = $(document).height();
+		const scrollPosition = $(window).height() + $(window).scrollTop();
+		
+		if ((scrollHeight - scrollPosition) < 10) {
+			const nextList = detailsList.splice(0, lazyLoadingLimit); // detailsList.slice(0, lazyLoadingLimit);
+			nextList.map(function(elem) {
+				var e = jQuery("<li class='image-group' id='" + elem['sanID'] + "'>[" + elem['num'] + "] " + elem['zipEntryName'] + '<ul class="image">' + elem['htmlElem'] + '</ul>' + "</li>");
+				$('#results > ul').append(e);	
+				//$('#results > ul').append("<li class='image-group' id='" + elem['sanID'] + "'>[" + elem['num'] + "] " + elem['zipEntryName'] + "</li>");
+				//$('#' + elem['sanID']).append('<ul class="image">' + elem['htmlElem'] + '</ul>');
 			});
 			
-			jQuery(':file').on('fileselect', function(event, numFiles, label) {
-				
-				var input = $(this).parents('.input-group').find(':text'),
-				log = numFiles > 1 ? numFiles + ' files selected' : label;
-				
-				if( input.length ) {
-					input.val(log);
-				} else {
-					if( log ) alert(log);
-				}
-				
-			});
-		});
-
+		}
+		
+		if (scrollPosition > 1200) {
+			$("#go-up-arrow").show();
+		} else {
+			$("#go-up-arrow").hide();
+		}
+	});
+	
+	jQuery(':file').on('fileselect', function(event, numFiles, label) {
+		
+		var input = $(this).parents('.input-group').find(':text'),
+		log = numFiles > 1 ? numFiles + ' files selected' : label;
+		
+		if( input.length ) {
+			input.val(log);
+		} else {
+			if( log ) alert(log);
+		}
+		
+	});
+});
+		
 // This code will attach `fileselect` event to all file inputs on the page
 $(document).on('change', ':file', function() {
     var input = $(this),
