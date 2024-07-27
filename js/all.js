@@ -9,8 +9,8 @@ var seriesObject = {};
 function validate(seriesObject) {
 	// inspect the seriesObject and update the assessment
 
-	var oked = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">	<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>  </svg>&nbsp;';
-	var failed = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bug" viewBox="0 0 16 16">                <path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A5 5 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A5 5 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623M4 7v4a4 4 0 0 0 3.5 3.97V7zm4.5 0v7.97A4 4 0 0 0 12 11V7zM12 6a4 4 0 0 0-1.334-2.982A3.98 3.98 0 0 0 8 2a3.98 3.98 0 0 0-2.667 1.018A4 4 0 0 0 4 6z"/>  </svg>&nbsp;';
+	var oked = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">	<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>  </svg>&nbsp;';
+	var failed = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bug" viewBox="0 0 16 16">                <path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A5 5 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A5 5 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623M4 7v4a4 4 0 0 0 3.5 3.97V7zm4.5 0v7.97A4 4 0 0 0 12 11V7zM12 6a4 4 0 0 0-1.334-2.982A3.98 3.98 0 0 0 8 2a3.98 3.98 0 0 0-2.667 1.018A4 4 0 0 0 4 6z"/>  </svg>&nbsp;';
 
 	// check for StudyDate
 	var inspect = true;
@@ -472,6 +472,10 @@ jQuery(document).ready(function() {
 							jQuery("#series-results").children().remove();
 							var ks = Object.keys(seriesObject);
 							ks.sort(function(a,b) {
+								if (seriesObject[a]["PatientID"] < seriesObject[b]["PatientID"])
+									return -1;
+								if (seriesObject[a]["PatientID"] > seriesObject[b]["PatientID"])
+									return 1;
 								if (parseInt(seriesObject[a]["SeriesNumber"]) < parseInt(seriesObject[b]["SeriesNumber"]))
 									return -1;
 							});
@@ -480,15 +484,18 @@ jQuery(document).ready(function() {
 							
 							// 
 							validate(seriesObject);
-							
+							var colors = [ "#fbb4ae",	"#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"];
+							var patientids = {};
+							Object.keys(seriesObject).map(function(a) { patientids[seriesObject[a]["PatientID"]] = true; });
+							patientids = Object.keys(patientids).sort();
 							for (var i = 0; i < ks.length; i++) {
 								var sanSeriesInstanceUID = ks[i].replace(/\//g, "_").replace(/\./g, "_");
 								
 								jQuery('#series-results').append(`<div class="col-sm-12 col-lg-3 col-md-4 series" 
-                                                                           id="ser-${sanSeriesInstanceUID}">
+                                                                           id="ser-${sanSeriesInstanceUID}" style="background-color: ${colors[(patientids.indexOf(seriesObject[ks[i]]["PatientID"])) % colors.length]};">
 								     <div class="modality">${seriesObject[ks[i]]["Modality"]}</div>
 									 <div class="patientid">PatientID: ${safetext(seriesObject[ks[i]]["PatientID"])}</div>
-									 <div class="series_description">${safetext(seriesObject[ks[i]]["SeriesDescription"])}</div>
+									 <div class="series_description" title="SeriesDescription">${safetext(seriesObject[ks[i]]["SeriesDescription"])}&nbsp;</div>
 								     <div class="num_files">Number of files: ${seriesObject[ks[i]]["Files"]}</div>
 								     <div class="series_number">${seriesObject[ks[i]]["SeriesNumber"]}</div>
 								     <div class="sequence_name">SequenceName: ${seriesObject[ks[i]]["SequenceName"]}</div>
