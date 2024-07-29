@@ -72,11 +72,11 @@ function validate(seriesObject) {
 		jQuery('#collapseTwo').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
 
-	// check for CSA
+	// check for CSA (if MRI and SIEMENS)
 	var inspect = true;
 	var failedList = {};
 	for (var entry in seriesObject) {
-		if (seriesObject[entry]["Manufacturer"] == "SIEMENS" ) {
+		if (seriesObject[entry]["Manufacturer"] == "SIEMENS" && seriesObject[entry]["Modality"] == "MR" ) {
 			if (typeof seriesObject[entry]["CSAImageHeaderInfo"] == "undefined" || seriesObject[entry]["CSAImageHeaderInfo"].length == 0) {
 				inspect = false;
 				failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "CSAImageHeaderInfo missing"]
@@ -92,7 +92,7 @@ function validate(seriesObject) {
 	jQuery('#icon-csa').append( (inspect?oked:failed) );
 	jQuery('#collapseThree').find('div.failed_list').children().remove();
 	if (Object.keys(failedList).length == 0) {
-		jQuery('#collapseThree').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok, or no SIEMENS series could be found.</div>");
+		jQuery('#collapseThree').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok, or no SIEMENS MRI series could be found.</div>");
 	} else {
 		var issues_found = "";
 		var keys = Object.keys(failedList);
