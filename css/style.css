@@ -74,6 +74,18 @@
     letter-spacing: 0.125em;
 }
 
+.studydate {
+    position: absolute;
+    top: 5px;
+    left: 40%;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    padding-left: 0px;
+    font-size: 14px;
+    letter-spacing: 0.125em;
+}
+
 .series_description {
     padding-left: 5px;
     font-size: 14px;

@@ -591,6 +591,10 @@ jQuery(document).ready(function() {
 									return -1;
 								if (seriesObject[a]["PatientID"] > seriesObject[b]["PatientID"])
 									return 1;
+								if (parseInt(seriesObject[a]["StudyInstanceUID"]) < parseInt(seriesObject[b]["StudyInstanceUID"]))
+									return -1;
+								if (parseInt(seriesObject[a]["StudyInstanceUID"]) > parseInt(seriesObject[b]["StudyInstanceUID"]))
+									return 1;
 								if (parseInt(seriesObject[a]["SeriesNumber"]) < parseInt(seriesObject[b]["SeriesNumber"]))
 									return -1;
 							});
@@ -600,15 +604,19 @@ jQuery(document).ready(function() {
 							// 
 							validate(seriesObject);
 							var colors = [ "#fbb4ae",	"#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"];
-							var patientids = {};
-							Object.keys(seriesObject).map(function(a) { patientids[seriesObject[a]["PatientID"]] = true; });
-							patientids = Object.keys(patientids).sort();
+							var StudyInstanceUIDs = [];
+							for (var i = 0; i < ks.length; i++) {
+								if (StudyInstanceUIDs.indexOf(seriesObject[ks[i]]["StudyInstanceUID"]) == -1)
+									StudyInstanceUIDs.push(seriesObject[ks[i]]["StudyInstanceUID"]);
+							}
+							//StudyInstanceUIDs = Object.keys(StudyInstanceUIDs); // .sort();
 							for (var i = 0; i < ks.length; i++) {
 								var sanSeriesInstanceUID = ks[i].replace(/\//g, "_").replace(/\./g, "_");
 								
 								jQuery('#series-results').append(`<div class="col-sm-12 col-lg-3 col-md-4 series" 
-                                                                           id="ser-${sanSeriesInstanceUID}" style="background-color: ${colors[(patientids.indexOf(seriesObject[ks[i]]["PatientID"])) % colors.length]};">
+                                                                           id="ser-${sanSeriesInstanceUID}" style="background-color: ${colors[(StudyInstanceUIDs.indexOf(seriesObject[ks[i]]["StudyInstanceUID"])) % colors.length]};">
 								     <div class="modality">${seriesObject[ks[i]]["Modality"]}</div>
+								     <div class="studydate">${seriesObject[ks[i]]["StudyDate"]}</div>
 									 <div class="patientid">PatientID: ${safetext(seriesObject[ks[i]]["PatientID"])}</div>
 									 <div class="series_description" title="SeriesDescription">${safetext(seriesObject[ks[i]]["SeriesDescription"])}&nbsp;</div>
 								     <div class="num_files">Number of files: ${seriesObject[ks[i]]["Files"]}</div>
