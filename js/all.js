@@ -169,7 +169,7 @@ function validate(seriesObject) {
 	jQuery('#icon-series-description').children().remove();
 	jQuery('#icon-series-description').text("");
 	jQuery('#icon-series-description').append( (inspect?oked:failed) );
-	jQuery('#collapseFive').find('div.failed_list').children().remove();
+	jQuery('#collapseSix').find('div.failed_list').children().remove();
 	if (Object.keys(failedList).length == 0) {
 		jQuery('#collapseSix').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
 	} else {
