@@ -22,7 +22,6 @@ function validate(seriesObject) {
 			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "StudyDate missing"]
 		}
 	}
-	// update
 	jQuery('#icon-study-date').children().remove();
 	jQuery('#icon-study-date').text("");
 	jQuery('#icon-study-date').append( (inspect?oked:failed) );
@@ -57,7 +56,6 @@ function validate(seriesObject) {
 			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "SOPInstanceUID missing"]
 		}
 	}
-	// update
 	jQuery('#icon-unique-identifiers').children().remove();
 	jQuery('#icon-unique-identifiers').text("");
 	jQuery('#icon-unique-identifiers').append( (inspect?oked:failed) );
@@ -89,7 +87,6 @@ function validate(seriesObject) {
 			}
 		}
 	}
-	// update
 	jQuery('#icon-csa').children().remove();
 	jQuery('#icon-csa').text("");
 	jQuery('#icon-csa').append( (inspect?oked:failed) );
@@ -104,6 +101,85 @@ function validate(seriesObject) {
 			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
 		}
 		jQuery('#collapseThree').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
+	}
+
+	// check for Manufacturer
+	var inspect = true;
+	var failedList = {};
+	for (var entry in seriesObject) {
+		if (typeof seriesObject[entry]["Manufacturer"] == "undefined" || seriesObject[entry]["Manufacturer"].length == 0) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "Manufacturer missing"]
+		}
+	}
+	jQuery('#icon-manufacturer').children().remove();
+	jQuery('#icon-manufacturer').text("");
+	jQuery('#icon-manufacturer').append( (inspect?oked:failed) );
+	jQuery('#collapseFour').find('div.failed_list').children().remove();
+	if (Object.keys(failedList).length == 0) {
+		jQuery('#collapseFour').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+	} else {
+		var issues_found = "";
+		var keys = Object.keys(failedList);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = failedList[keys[i]][0];
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+		}
+		jQuery('#collapseFour').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
+	}
+
+	// check for PatientID PatientName
+	var inspect = true;
+	var failedList = {};
+	for (var entry in seriesObject) {
+		if (typeof seriesObject[entry]["PatientID"] == "undefined" || seriesObject[entry]["PatientID"].length == 0) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "PatientID missing"]
+		}
+		if (typeof seriesObject[entry]["PatientName"] == "undefined" || seriesObject[entry]["PatientName"].length == 0) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "PatientName missing"]
+		}
+	}
+	jQuery('#icon-patientid-patientname').children().remove();
+	jQuery('#icon-patientid-patientname').text("");
+	jQuery('#icon-patientid-patientname').append( (inspect?oked:failed) );
+	jQuery('#collapseFive').find('div.failed_list').children().remove();
+	if (Object.keys(failedList).length == 0) {
+		jQuery('#collapseFive').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+	} else {
+		var issues_found = "";
+		var keys = Object.keys(failedList);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = failedList[keys[i]][0];
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+		}
+		jQuery('#collapseFive').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
+	}
+
+	// check for SeriesDescription
+	var inspect = true;
+	var failedList = {};
+	for (var entry in seriesObject) {
+		if (typeof seriesObject[entry]["SeriesDescription"] == "undefined" || seriesObject[entry]["SeriesDescription"].length == 0) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "SeriesDescription missing"]
+		}
+	}
+	jQuery('#icon-series-description').children().remove();
+	jQuery('#icon-series-description').text("");
+	jQuery('#icon-series-description').append( (inspect?oked:failed) );
+	jQuery('#collapseFive').find('div.failed_list').children().remove();
+	if (Object.keys(failedList).length == 0) {
+		jQuery('#collapseSix').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+	} else {
+		var issues_found = "";
+		var keys = Object.keys(failedList);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = failedList[keys[i]][0];
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+		}
+		jQuery('#collapseSix').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
 
 
