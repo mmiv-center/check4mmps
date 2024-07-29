@@ -554,7 +554,7 @@ jQuery(document).ready(function() {
 					text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
 				}));
 				numFilesTotal = numFilesTotal + Object.keys(zip.files).length;
-				jQuery('#stat').html("Number of files: <span id='loadingCounter'>0</span>/" + numFilesTotal + ", Number of series: <span id='number-series'>0</span>");
+				jQuery('#stat').html("Number of DICOM files: <span id='loadingCounter'>0</span>/" + numFilesTotal + ", Number of series: <span id='number-series'>0</span>");
 				
 				zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
 					var sanID = zipEntry.name.replace(/\//g, "_").replace(/\./g, "_").replace(/=/g, "_");
