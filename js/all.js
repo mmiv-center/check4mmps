@@ -92,7 +92,7 @@ function validate(seriesObject) {
 	jQuery('#icon-csa').append( (inspect?oked:failed) );
 	jQuery('#collapseThree').find('div.failed_list').children().remove();
 	if (Object.keys(failedList).length == 0) {
-		jQuery('#collapseThree').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+		jQuery('#collapseThree').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok, or no SIEMENS series could be found.</div>");
 	} else {
 		var issues_found = "";
 		var keys = Object.keys(failedList);
