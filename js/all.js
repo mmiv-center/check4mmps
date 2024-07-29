@@ -9,56 +9,83 @@ var seriesObject = {};
 function validate(seriesObject) {
 	// inspect the seriesObject and update the assessment
 
-	var oked = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">	<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>  </svg>&nbsp;';
-	var failed = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bug" viewBox="0 0 16 16">                <path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A5 5 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A5 5 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623M4 7v4a4 4 0 0 0 3.5 3.97V7zm4.5 0v7.97A4 4 0 0 0 12 11V7zM12 6a4 4 0 0 0-1.334-2.982A3.98 3.98 0 0 0 8 2a3.98 3.98 0 0 0-2.667 1.018A4 4 0 0 0 4 6z"/>  </svg>&nbsp;';
+	var oked = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" class="bi bi-check" viewBox="0 0 16 16">	<path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>  </svg>&nbsp;';
+	var failed = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="red" class="bi bi-bug" viewBox="0 0 16 16">                <path d="M4.355.522a.5.5 0 0 1 .623.333l.291.956A5 5 0 0 1 8 1c1.007 0 1.946.298 2.731.811l.29-.956a.5.5 0 1 1 .957.29l-.41 1.352A5 5 0 0 1 13 6h.5a.5.5 0 0 0 .5-.5V5a.5.5 0 0 1 1 0v.5A1.5 1.5 0 0 1 13.5 7H13v1h1.5a.5.5 0 0 1 0 1H13v1h.5a1.5 1.5 0 0 1 1.5 1.5v.5a.5.5 0 1 1-1 0v-.5a.5.5 0 0 0-.5-.5H13a5 5 0 0 1-10 0h-.5a.5.5 0 0 0-.5.5v.5a.5.5 0 1 1-1 0v-.5A1.5 1.5 0 0 1 2.5 10H3V9H1.5a.5.5 0 0 1 0-1H3V7h-.5A1.5 1.5 0 0 1 1 5.5V5a.5.5 0 0 1 1 0v.5a.5.5 0 0 0 .5.5H3c0-1.364.547-2.601 1.432-3.503l-.41-1.352a.5.5 0 0 1 .333-.623M4 7v4a4 4 0 0 0 3.5 3.97V7zm4.5 0v7.97A4 4 0 0 0 12 11V7zM12 6a4 4 0 0 0-1.334-2.982A3.98 3.98 0 0 0 8 2a3.98 3.98 0 0 0-2.667 1.018A4 4 0 0 0 4 6z"/>  </svg>&nbsp;';
 
 	// check for StudyDate
 	var inspect = true;
+	var failedList = {};
 	for (var entry in seriesObject) {
 
 		if (typeof seriesObject[entry]["StudyDate"] == "undefined" || seriesObject[entry]["StudyDate"].length == 0) {
 			inspect = false;
-			break;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "StudyDate missing"]
 		}
 	}
 	// update
 	jQuery('#icon-study-date').children().remove();
 	jQuery('#icon-study-date').text("");
 	jQuery('#icon-study-date').append( (inspect?oked:failed) );
+	jQuery('#collapseOne').find('div.failed_list').children().remove();
+	if (Object.keys(failedList).length == 0) {
+		jQuery('#collapseOne').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+	} else {
+		var issues_found = "";
+		var keys = Object.keys(failedList);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = failedList[keys[i]][0];
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+		}
+		jQuery('#collapseOne').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
+	}
 
 	// check for UIDs
 	var inspect = true;
+	var failedList = {};
 	for (var entry in seriesObject) {
 
 		if (typeof seriesObject[entry]["StudyInstanceUID"] == "undefined" || seriesObject[entry]["StudyInstanceUID"].length == 0) {
 			inspect = false;
-			break;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "StudyInstanceUID missing"]
 		}
 		if (typeof seriesObject[entry]["SeriesInstanceUID"] == "undefined" || seriesObject[entry]["SeriesInstanceUID"].length == 0) {
 			inspect = false;
-			break;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "SeriesInstanceUID missing"]
 		}
 		if (typeof seriesObject[entry]["SOPInstanceUID"] == "undefined" || seriesObject[entry]["SOPInstanceUID"].length == 0) {
 			inspect = false;
-			break;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "SOPInstanceUID missing"]
 		}
 	}
 	// update
 	jQuery('#icon-unique-identifiers').children().remove();
 	jQuery('#icon-unique-identifiers').text("");
 	jQuery('#icon-unique-identifiers').append( (inspect?oked:failed) );
+	jQuery('#collapseTwo').find('div.failed_list').children().remove();
+	if (Object.keys(failedList).length == 0) {
+		jQuery('#collapseTwo').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+	} else {
+		var issues_found = "";
+		var keys = Object.keys(failedList);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = failedList[keys[i]][0];
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+		}
+		jQuery('#collapseTwo').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
+	}
 
 	// check for CSA
 	var inspect = true;
+	var failedList = {};
 	for (var entry in seriesObject) {
 		if (seriesObject[entry]["Manufacturer"] == "SIEMENS" ) {
 			if (typeof seriesObject[entry]["CSAImageHeaderInfo"] == "undefined" || seriesObject[entry]["CSAImageHeaderInfo"].length == 0) {
 				inspect = false;
-				break;
+				failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "CSAImageHeaderInfo missing"]
 			}
 			if (typeof seriesObject[entry]["CSASeriesHeaderInfo"] == "undefined" || seriesObject[entry]["CSASeriesHeaderInfo"].length == 0) {
 				inspect = false;
-				break;
+				failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "CSASeriesHeaderInfo missing"]
 			}
 		}
 	}
@@ -66,6 +93,18 @@ function validate(seriesObject) {
 	jQuery('#icon-csa').children().remove();
 	jQuery('#icon-csa').text("");
 	jQuery('#icon-csa').append( (inspect?oked:failed) );
+	jQuery('#collapseThree').find('div.failed_list').children().remove();
+	if (Object.keys(failedList).length == 0) {
+		jQuery('#collapseThree').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+	} else {
+		var issues_found = "";
+		var keys = Object.keys(failedList);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = failedList[keys[i]][0];
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+		}
+		jQuery('#collapseThree').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
+	}
 
 
 }
@@ -284,7 +323,7 @@ function dumpDataSet(dataSet, output) {
 				"Files": 0, 
 				"SeriesNumber": captureValues["SeriesNumber"], 
 				"SeriesDescription": captureValues["SeriesDescription"], 
-				"SequenceName": captureValues["SequenceName"], 
+				"SequenceName": (typeof captureValues["SequenceName"] == "undefined"?"missing":captureValues["SequenceName"]), 
 				"Modality": captureValues["Modality"], 
 				"PatientID": captureValues["PatientID"], 
 				"StudyDate": captureValues["StudyDate"],
@@ -502,7 +541,7 @@ jQuery(document).ready(function() {
 								     </div>`
 								);
 							}
-							console.log("finished on zip file");
+							//console.log("finished on zip file");
 							
 							var loadingCounter = parseInt(jQuery("#loadingCounter").text());
 							loadingCounter = loadingCounter + 1;
@@ -562,6 +601,20 @@ jQuery(document).ready(function() {
 		}
 		
 	});
+	jQuery('#toggle-details').on('click', function() {
+		var shown = true;
+		if (jQuery('#results').is(":hidden")) {
+			jQuery('#toggle-details').text("Hide Details");
+			shown = false;
+		}
+		if (shown) {
+			jQuery('#toggle-details').text("Show Details");
+			jQuery('#results').hide();
+		} else {
+			jQuery('#results').show();
+		}
+	});
+
 });
 		
 // This code will attach `fileselect` event to all file inputs on the page

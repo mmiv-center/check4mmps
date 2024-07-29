@@ -15,7 +15,7 @@
 </head>
 <body>
   
-  <header id="header">
+  <header>
     <div class="collapse bg-dark" id="navbarHeader">
       <div class="container">
         <div class="row">
@@ -33,26 +33,25 @@
         </div>
       </div>
     </div>
-    <div class="navbar navbar-dark bg-dark shadow-sm">
-      <div class="container d-flex justify-content-between">
+    <div class="navbar navbar-dark bg-dark shadow-sm" id="top-of-page">
+      <div class="container">
         <a href="#" class="navbar-brand d-flex align-items-center">
           <strong>Check4MMPS</strong>
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
     </div>
-  </header>
+  </header>  
   
-  
-  <div class="container-fluid">
-    <div class="row-fluid" style="margin-top: 10px;">
-      <p>This page only accepts zip folders and parses them for DICOM files. It is safe to use this application on sensitive data as no part of your zip-file will be uploaded. Will we not track who or how often this service is used, but github might. All computations are performed in your web-browser at your site.</p>
+  <div class="container">
+    <div class="row" style="margin-top: 10px;">
+      <p>This page only accepts zip folders and parses them for DICOM files. It is safe to use this application on sensitive data as no part of your zip-file will be uploaded. Will we not track who or how often this service is used, but github might. The assessments are performed in your web-browser at your site.</p>
       
       <!-- <input type="file" id="file" name="file" multiple /><br /> -->
       
-      <div class="col-lg-6 col-sm-12 col-12" style="padding-left: 0px;">
+      <div class="col-lg-6 col-sm-12 col-12">
         
         <div class="input-group">
           <label class="input-group-btn">
@@ -67,14 +66,14 @@
       
       
       <div style="margin-top: 30px;">
-        <h4>Content</h4>
-        <h5>Summary</h5>
         <div>
-          <span id="stat"></span>
+          <span id="stat">
+            Number of files: <span id='loadingCounter'>0</span>, Number of series: <span id='number-series'>0</span>
+          </span>
         </div>
       </div>
     </div>
-    <div class="row-fluid" style="margin-top: 20px;">
+    <div class="row" style="margin-top: 20px;">
       <h4>Assessment</h4>
       <div id="assessments" class="accordion" style="margin-bottom: 20px;">
         <div class="accordion-item">
@@ -91,6 +90,7 @@
           <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
               <strong>Test if StudyDate is present.</strong> The "StudyDate" DICOM tag (0008,0020) should be present and in the correct format, e.g. 20060306 (sixths of march 2006).
+              <div class="failed_list"></div>
             </div>
           </div>            
         </div>
@@ -106,6 +106,7 @@
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <div class="accordion-body">
               <strong>Test if Study, Series and SOPInstanceUID tags are in each DICOM file.</strong> The three identifiers do not contain any patient relevant information. They are needed to distinguish a DICOM file from any other file (in the univers).
+              <div class="failed_list"></div>
             </div>
           </div>            
         </div>
@@ -121,30 +122,33 @@
           </h2>
           <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <strong>Private tags CSAImageHeaderInfo and CSASeriesHeaderInfo.</strong> If SIEMENS is the manufacturer we expect the CSA header entries (private tags) to have a value.
+              <strong>Private tags CSAImageHeaderInfo and CSASeriesHeaderInfo.</strong> If SIEMENS is the manufacturer we expect the CSA header entries (private tags) to have a value. MMPS will use the values to decide if gradient distortion corrections need to be performed.<br>
+              <div class="failed_list"></div>
             </div>
           </div>            
         </div>
 
       </div>
     </div>
-
+    <div>List of detected series</div>
     <div id="series-results" class="row" style="margin-left: 0px; margin-right: 0px;"></div>
-    <div class="row-fluid" style="margin-top: 20px">
+    <div class="row" style="margin-top: 20px">
       <h5 style="margin-top: 20px;">Details</h5>
-      <div id="results">Load a zip-file first...</div>
+      <button class="btn btn-primary btn-sm" id="toggle-details" style="margin-bottom: 5px;">Show details</button>
+      <div id="results" style="display: none;">Load a zip-file first...</div>
+      <div style="margin-bottom: 20px;">&nbsp;</div>
     </div>
     
   </div>
   
-  <a id="go-up-arrow" href="#header" style="position: fixed; bottom: 100px; right: 100px; display: none">
+  <a id="go-up-arrow" href="#top-of-page" style="position: fixed; bottom: 100px; right: 100px; display: none">
     <img src="up-arrow.png" alt="Up arrow">
   </a>
   
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="js/jquery-3.6.1.min.js"></script>
-  <script src="js/popper.min.js"></script>
+<!--  <script src="js/popper.min.js"></script> -->
   <script src="js/bootstrap.min.js"></script>
   <script src="js/moment-with-locales.min.js" type="text/javascript"></script>
   <script src="js/select2.min.js"></script>
