@@ -23,6 +23,7 @@
             <h4 class="text-white">About</h4>
             <p class="text-muted">This page accepts zip folders and tests the contained DICOM files for compatibility with MMPS processing. If no errors are found the assessments should all report with a green checkmark. Open the corresponding section to see a detailed list of erroneous entries. Please be aware that MMPS is under continued development, additional tags might be required in the future. Please report such issues to the authors so they can be added to this application.</p>
             <p class="text-muted">Multi-Modal Processing Stream (MMPS, https://doi.org/10.1016%2Fj.neuroimage.2019.116091) is a software package developed and maintained in-house at the Center for Multimodal Imaging and Genetics (CMIG) at the University of California, San Diego (UCSD).</p>
+            <p class="text-muted">General instructions for pseudonymization/anonymization of DICOM data: Use your PACS or a tool like (MIRC Anonymizer)[http://mirc.rsna.org/download/Anonymizer-installer.jar] for data anonymization. Replace both PatientID and PatientName with the study identifier for the participant. Do not remove private tags.</p>
           </div>
           <div class="col-sm-4 offset-md-1 py-4">
             <h4 class="text-white">Contact</h4>
@@ -50,7 +51,6 @@
     <div class="row" style="margin-top: 10px;">
       <h5>GEMRIC Validator for MMPS</h5>
       <p>This page only accepts zip folders and parses them for DICOM files. It is safe to use this application on sensitive data as no part of your data will leave your machine. The assessments are performed in your web-browser and at your site.</p>
-      <p>General instructions for pseudonymization/anonymization of DICOM data: Use your PACS or a tool like http://mirc.rsna.org/download/Anonymizer-installer.jar for data anonymization. Replace both PatientID and PatientName with the study identifier for the participant. Do not remove private tags.</p>
       
       <!-- <input type="file" id="file" name="file" multiple /><br /> -->
       
