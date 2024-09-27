@@ -293,7 +293,7 @@ function dumpDataSet(dataSet, output) {
 			} else {
 				// if the length of the element is less than 128 we try to show it.  We put this check in
 				// to avoid displaying large strings which makes it harder to use.
-				if (element.length < 128) {
+				//if (element.length < 128) {
 					// Since the dataset might be encoded using implicit transfer syntax and we aren't using
 					// a data dictionary, we need some simple logic to figure out what data types these
 					// elements might be.  Since the dataset might also be explicit we could be switch on the
@@ -302,11 +302,11 @@ function dumpDataSet(dataSet, output) {
 					// First we check to see if the element's length is appropriate for a UI or US VR.
 					// US is an important type because it is used for the
 					// image Rows and Columns so that is why those are assumed over other VR types.
-					if (element.length === 2) {
+					//if (element.length === 2) {
 						// text += " (" + dataSet.uint16(propertyName) + ")";
-					} else if (element.length === 4) {
+					//} else if (element.length === 4) {
 						// text += " (" + dataSet.uint32(propertyName) + ")";
-					}
+					//}
 					
 					// Next we ask the dataset to give us the element's data in string form.  Most elements are
 					// strings but some aren't so we do a quick check to make sure it actually has all ascii
@@ -359,7 +359,7 @@ function dumpDataSet(dataSet, output) {
 								captureValues["CSASeriesHeaderInfo"] = str.length;
 							}
 							
-							text += '"' + safetext(str) + '"';
+						    text += '"' + safetext(str.slice(0,128)) + '"';
 						}
 					} else {
 						if (element.length !== 2 && element.length !== 4) {
@@ -374,12 +374,12 @@ function dumpDataSet(dataSet, output) {
 						title = "no value stored in DICOM header";
 					}
 					
-				} else {
+				/*} else {
 					color = '#C8C8C8';
 					
 					// Add text saying the data is too long to show...
 					text += "<i>data too long to show</i>";
-				}
+				}*/
 				// finally we add the string to our output array surrounded by li elements so it shows up in the
 				// DOM as a list
 				output.push('<li style="color:' + color + ';" ' + (title!=""?'title="' + title + '"':"") + '>' + text + '</li>');
