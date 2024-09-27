@@ -560,7 +560,7 @@ jQuery(document).ready(function() {
 				jQuery('#stat').html("Number of DICOM files: <span id='loadingCounter'>0</span>/" + numFilesTotal + " (<span id='errorCounter'>0</span> non-DICOM files ignored), Number of series: <span id='number-series'>0</span>");
 				
 				zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
-				    var sanID = zipEntry.name.replace(/\//g, "_").replace(/\./g, "_").replace(/=/g, "_").replace(/&/g, "_");
+				    var sanID = zipEntry.name.replace(/\//g, "_").replace(/\./g, "_").replace(/[^A-Za-z0-9]/g, "_");
 					
 					// append only first 10 entries
 					if (counter < lazyLoadingLimit) {
