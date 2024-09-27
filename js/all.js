@@ -347,6 +347,9 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "PatientID") {
 								captureValues["PatientID"] = str;
 							}
+							if (validElementNames[propertyName] == "PatientName") {
+								captureValues["PatientName"] = str;
+							}
 							if (validElementNames[propertyName] == "Manufacturer") {
 								captureValues["Manufacturer"] = str;
 							}
