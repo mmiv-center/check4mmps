@@ -405,6 +405,7 @@ function dumpDataSet(dataSet, output) {
 				"SequenceName": (typeof captureValues["SequenceName"] == "undefined"?"missing":captureValues["SequenceName"]), 
 				"Modality": captureValues["Modality"], 
 				"PatientID": captureValues["PatientID"], 
+				"PatientName": captureValues["PatientName"], 
 				"StudyDate": captureValues["StudyDate"],
 				"Manufacturer": captureValues["Manufacturer"],
 				"SeriesInstanceUID": captureValues["SeriesInstanceUID"],
@@ -576,7 +577,7 @@ jQuery(document).ready(function() {
 								dataSet = dicomParser.parseDicom(data);
 							} catch(e) {
 								// found an issue with this file, broken DICOM?
-								console.log("broken file?");
+								// console.log("broken file?");
 								var errorCounter = parseInt(jQuery("#errorCounter").text());
 								errorCounter = errorCounter + 1;
 								jQuery("#errorCounter").text(errorCounter);
