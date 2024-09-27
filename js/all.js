@@ -554,7 +554,7 @@ jQuery(document).ready(function() {
 					text:" (loaded in " + (dateAfter - dateBefore) + "ms)"
 				}));
 				numFilesTotal = numFilesTotal + Object.keys(zip.files).length;
-				jQuery('#stat').html("Number of DICOM files: <span id='loadingCounter'>0</span>/" + numFilesTotal + ", Number of series: <span id='number-series'>0</span>");
+				jQuery('#stat').html("Number of DICOM files: <span id='loadingCounter'>0</span>/" + numFilesTotal + " (<span id='errorCounter'>0</span> non-DICOM files ignored), Number of series: <span id='number-series'>0</span>");
 				
 				zip.forEach(function (relativePath, zipEntry) {  // 2) print entries
 					var sanID = zipEntry.name.replace(/\//g, "_").replace(/\./g, "_").replace(/=/g, "_");
@@ -568,7 +568,21 @@ jQuery(document).ready(function() {
 						zipEntry.async("uint8array").then(function(data) {
 							// console.log("we received the data for " + nam + " - size: " + data.length);
 							// parse the data and get all the DICOM tags here... or just one of them...
-							dataSet = dicomParser.parseDicom(data);
+							var dataSet = null;
+							try {
+								dataSet = dicomParser.parseDicom(data);
+							} catch(e) {
+								// found an issue with this file, broken DICOM?
+								console.log("broken file?");
+								var errorCounter = parseInt(jQuery("#errorCounter").text());
+								errorCounter = errorCounter + 1;
+								jQuery("#errorCounter").text(errorCounter);
+								var loadingCounter = parseInt(jQuery("#loadingCounter").text());
+								if (loadingCounter + errorCounter >= numFilesTotal) {
+									jQuery('#done').html("Import finished.");
+								}
+								return;
+							}
 							var output = [];
 							dumpDataSet(dataSet, output);
 							
@@ -631,6 +645,11 @@ jQuery(document).ready(function() {
 							loadingCounter = loadingCounter + 1;
 							jQuery("#loadingCounter").text(loadingCounter);
 							
+							// detect when we are ready... have looked at all files
+							var errorCounter = parseInt(jQuery("#errorCounter").text());
+							if (loadingCounter + errorCounter >= numFilesTotal) {
+								jQuery('#done').html("import finished");
+							}
 						});
 					})(sanID, zipEntry.name, counter);
 					counter++;
@@ -646,6 +665,7 @@ jQuery(document).ready(function() {
 		seriesObject = {};
 		var files = e.target.files;
 		for (var i = 0; i < files.length; i++) {
+			jQuery('#done').html("start importing...");
 			handleFile(files[i]);
 		}	
 	});
