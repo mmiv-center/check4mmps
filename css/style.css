@@ -74,6 +74,24 @@
     letter-spacing: 0.125em;
 }
 
+.studyid {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    padding-left: 0px;
+    font-size: 24px;
+    letter-spacing: 0.125em;
+}
+
+.accessionnumber {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    padding-left: 0px;
+    font-size: 24px;
+    letter-spacing: 0.125em;
+}
+
 .studydate {
     position: absolute;
     top: 5px;

@@ -204,6 +204,8 @@ function dumpDataSet(dataSet, output) {
 		"x00080018": "SOPInstanceUID", // needed
 		"x00080020": "StudyDate",        // needed
 		"x00080030": "StudyTime",
+		"x00200010": "StudyID",
+		"x00080050": "AccessionNumber",
 		//"x00200013": "InstanceNumber",
 		//"x00201041": "SliceLocation",
 		"x00180024": "SequenceName",
@@ -353,6 +355,12 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "Manufacturer") {
 								captureValues["Manufacturer"] = str;
 							}
+							if (validElementNames[propertyName] == "StudyID") {
+								captureValues["StudyID"] = str;
+							}
+							if (validElementNames[propertyName] == "AccessionNumber") {
+								captureValues["AccessionNumber"] = str;
+							}
 							// CSAImageHeaderInfo
 							if (validElementNames[propertyName] == "CSAImageHeaderInfo") {
 								captureValues["CSAImageHeaderInfo"] = str.length;
@@ -412,7 +420,9 @@ function dumpDataSet(dataSet, output) {
 				"StudyInstanceUID": captureValues["StudyInstanceUID"],
 				"SOPInstanceUID": captureValues["SOPInstanceUID"],
 				"CSASeriesHeaderInfo": captureValues["CSASeriesHeaderInfo"],
-				"CSAImageHeaderInfo": captureValues["CSAImageHeaderInfo"]
+				"CSAImageHeaderInfo": captureValues["CSAImageHeaderInfo"],
+				"StudyID": captureValues["StudyID"],
+				"AccessionNumber": captureValues["AccessionNumber"]
 			};
 		}
 		seriesObject[captureValues["SeriesInstanceUID"]]["Files"] += 1;
@@ -640,6 +650,8 @@ jQuery(document).ready(function() {
 								     <div class="num_files">Number of files: ${seriesObject[ks[i]]["Files"]}</div>
 								     <div class="series_number">${seriesObject[ks[i]]["SeriesNumber"]}</div>
 								     <div class="sequence_name">SequenceName: ${seriesObject[ks[i]]["SequenceName"]}</div>
+								     <div class="studyid">StudyID: ${seriesObject[ks[i]]["StudyID"]}</div>
+								     <div class="accessionnumber">AccessionNumber: ${seriesObject[ks[i]]["AccessionNumber"]}</div>
 								     </div>`
 								);
 							}
