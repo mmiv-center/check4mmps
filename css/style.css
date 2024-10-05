@@ -122,3 +122,8 @@
     top: 0px;
     right: 5px;
 }
+
+.accordion-item {
+    margin-bottom: 10px;
+    border-bottom: 1px solid grey;
+}
