@@ -123,8 +123,11 @@
     right: 5px;
 }
 
+.accordion-item:not(:first-of-type) {
+    border-top: 1px solid lightgrey;
+}
+
 .accordion-item {
     margin-bottom: 10px;
     border-bottom: 1px solid lightgrey;
-    border-top: 1px solid lightgrey;    
 }
