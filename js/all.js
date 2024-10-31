@@ -111,6 +111,10 @@ function validate(seriesObject) {
 			inspect = false;
 			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "Manufacturer missing"]
 		}
+		if (typeof seriesObject[entry]["ManufacturerModelName"] == "undefined" || seriesObject[entry]["ManufacturerModelName"].length == 0) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "ManufacturerModelName missing"]
+		}
 	}
 	jQuery('#icon-manufacturer').children().remove();
 	jQuery('#icon-manufacturer').text("");
@@ -221,7 +225,8 @@ function dumpDataSet(dataSet, output) {
 		"x00291019": "CSASeriesHeaderVersion",
 		"x00291020": "CSASeriesHeaderInfo",
 		"x00080060": "Modality", // needed
-		"x00080070": "Manufacturer" // needed
+		"x00080070": "Manufacturer", // needed
+		"x00081090": "ManufacturerModelName" // needed
 	};
 	var validElements = Object.keys(validElementNames);
 	
@@ -355,6 +360,9 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "Manufacturer") {
 								captureValues["Manufacturer"] = str;
 							}
+							if (validElementNames[propertyName] == "ManufacturerModelName") {
+								captureValues["ManufacturerModelName"] = str;
+							}
 							if (validElementNames[propertyName] == "StudyID") {
 								captureValues["StudyID"] = str;
 							}
@@ -416,6 +424,7 @@ function dumpDataSet(dataSet, output) {
 				"PatientName": captureValues["PatientName"], 
 				"StudyDate": captureValues["StudyDate"],
 				"Manufacturer": captureValues["Manufacturer"],
+				"ManufacturerModelName": captureValues["ManufacturerModelName"],
 				"SeriesInstanceUID": captureValues["SeriesInstanceUID"],
 				"StudyInstanceUID": captureValues["StudyInstanceUID"],
 				"SOPInstanceUID": captureValues["SOPInstanceUID"],
