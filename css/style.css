@@ -111,10 +111,11 @@
     font-style: italic;
 }
 
-.num_files, .sequence_name, .patientid {
+.num_files, .sequence_name, .patientid, .studyid, .accessionnumber {
     padding-left: 5px;
     font-size: 14px;
     overflow-x: hidden;
+    white-space: nowrap;
 }
 
 .series_number {
