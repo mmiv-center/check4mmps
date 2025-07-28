@@ -640,7 +640,8 @@ jQuery(document).ready(function() {
 							
 							// 
 							validate(seriesObject);
-							var colors = [ "#fbb4ae",	"#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"];
+							var colors = [ "#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"];
+							//var colors = [ "#fbb4ae",	"#b3cde3", "#ccebc5", "#decbe4", "#fed9a6", "#ffffcc", "#e5d8bd", "#fddaec", "#f2f2f2"];
 							var StudyInstanceUIDs = [];
 							for (var i = 0; i < ks.length; i++) {
 								if (StudyInstanceUIDs.indexOf(seriesObject[ks[i]]["StudyInstanceUID"]) == -1)
