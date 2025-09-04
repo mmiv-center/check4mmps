@@ -33,7 +33,7 @@ function validate(seriesObject) {
 		var keys = Object.keys(failedList);
 		for (var i = 0; i < keys.length; i++) {
 			var entry = failedList[keys[i]][0];
-			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <br><span>Reason: " + failedList[keys[i]][2] + "</li>";
 		}
 		jQuery('#collapseOne').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
@@ -67,7 +67,7 @@ function validate(seriesObject) {
 		var keys = Object.keys(failedList);
 		for (var i = 0; i < keys.length; i++) {
 			var entry = failedList[keys[i]][0];
-			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <br><span>Reason: " + failedList[keys[i]][2] + "</li>";
 		}
 		jQuery('#collapseTwo').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
@@ -106,7 +106,7 @@ function validate(seriesObject) {
 		var keys = Object.keys(failedList);
 		for (var i = 0; i < keys.length; i++) {
 			var entry = failedList[keys[i]][0];
-			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <br><span>Reason: " + failedList[keys[i]][2] + "</li>";
 		}
 		jQuery('#collapseThree').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
@@ -135,7 +135,7 @@ function validate(seriesObject) {
 		var keys = Object.keys(failedList);
 		for (var i = 0; i < keys.length; i++) {
 			var entry = failedList[keys[i]][0];
-			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <br><span>Reason: " + failedList[keys[i]][2] + "</li>";
 		}
 		jQuery('#collapseFour').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
@@ -164,7 +164,7 @@ function validate(seriesObject) {
 		var keys = Object.keys(failedList);
 		for (var i = 0; i < keys.length; i++) {
 			var entry = failedList[keys[i]][0];
-			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <br><span>Reason: " + failedList[keys[i]][2] + "</li>";
 		}
 		jQuery('#collapseFive').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
@@ -189,7 +189,7 @@ function validate(seriesObject) {
 		var keys = Object.keys(failedList);
 		for (var i = 0; i < keys.length; i++) {
 			var entry = failedList[keys[i]][0];
-			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <span>Reason: " + failedList[keys[i]][2] + "</li>";
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <br><span>Reason: " + failedList[keys[i]][2] + "</li>";
 		}
 		jQuery('#collapseSix').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
