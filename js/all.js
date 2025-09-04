@@ -85,6 +85,14 @@ function validate(seriesObject) {
 				inspect = false;
 				failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "CSASeriesHeaderInfo missing"]
 			}
+			if (typeof seriesObject[entry]["CSAImageHeaderType"] == "undefined") {
+				inspect = false;
+				failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "CSAImageHeaderType missing"]
+			}			
+			if (typeof seriesObject[entry]["CSAImageHeaderType"] != "undefined" && typeof seriesObject[entry]["CSAImageHeaderType"] != "string") {
+				inspect = false;
+				failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "CSAImageHeaderType should be string, anonymizer broke value representation"]
+			}			
 		}
 	}
 	jQuery('#icon-csa').children().remove();
@@ -218,7 +226,7 @@ function dumpDataSet(dataSet, output) {
 		"x00180022": "ScanOptions",
 		//"x00180023": "MRAcquisitionType",
 		"x00080090": "ReferringPhysician",
-		"x00291008": "CSAImageHeaderType",
+		"x00291008": "CSAImageHeaderType", // expected to be a string!! Check this
 		"x00291009": "CSAImageHeaderVersion",
 		"x00291010": "CSAImageHeaderInfo",
 		"x00291018": "CSASeriesHeaderType",
@@ -226,7 +234,8 @@ function dumpDataSet(dataSet, output) {
 		"x00291020": "CSASeriesHeaderInfo",
 		"x00080060": "Modality", // needed
 		"x00080070": "Manufacturer", // needed
-		"x00081090": "ManufacturerModelName" // needed
+		"x00081090": "ManufacturerModelName", // needed
+		"x00280030": "PixelSpacing" // needed (if it has 2 elements)
 	};
 	var validElements = Object.keys(validElementNames);
 	
@@ -373,6 +382,9 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "CSAImageHeaderInfo") {
 								captureValues["CSAImageHeaderInfo"] = str.length;
 							}
+							if (validElementNames[propertyName] == "CSAImageHeaderType") {
+								captureValues["CSAImageHeaderType"] = str.length;
+							}
 							// CSASeriesHeaderInfo
 							if (validElementNames[propertyName] == "CSASeriesHeaderInfo") {
 								captureValues["CSASeriesHeaderInfo"] = str.length;
@@ -430,6 +442,7 @@ function dumpDataSet(dataSet, output) {
 				"SOPInstanceUID": captureValues["SOPInstanceUID"],
 				"CSASeriesHeaderInfo": captureValues["CSASeriesHeaderInfo"],
 				"CSAImageHeaderInfo": captureValues["CSAImageHeaderInfo"],
+				"CSAImageHeaderType": captureValues["CSAImageHeaderType"],
 				"StudyID": captureValues["StudyID"],
 				"AccessionNumber": captureValues["AccessionNumber"]
 			};
