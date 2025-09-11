@@ -115,7 +115,7 @@
           </h2>
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <strong>Test if Study-, Series- and SOPInstanceUID tags are in each DICOM file.</strong> The three identifiers do not contain any patient relevant information. They are needed to identify images that belong together (images in a volume, series in a study).
+              <strong>Test if Study-, Series- and SOPInstanceUID tags are in each DICOM file.</strong> The three identifiers do not contain any patient relevant information. They are needed to identify images that belong together (images in a volume, series in a study). We also need to verify that each of the three UIDs confirms to the DICOM standard - contains numbers and dots only and no number series starts with 0. 
               <div class="failed_list"></div>
             </div>
           </div>            
