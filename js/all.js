@@ -6,6 +6,13 @@ function isASCII(str) {
 
 var seriesObject = {};
 
+
+function isValidUIDString(str) {
+  const regex = /^(?!.*\b0\d)(\d+(\.\d+)*|\d+)$/;
+  return regex.test(str);
+}
+
+
 function validate(seriesObject) {
 	// inspect the seriesObject and update the assessment
 
@@ -54,6 +61,19 @@ function validate(seriesObject) {
 		if (typeof seriesObject[entry]["SOPInstanceUID"] == "undefined" || seriesObject[entry]["SOPInstanceUID"].length == 0) {
 			inspect = false;
 			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "SOPInstanceUID missing"]
+		}
+		// check if the Study/Series/SOP InstanceUID values are encoded based on standard (MMPS is now failing because they revert to "invalid" and cannot be sorted)
+        if (typeof seriesObject[entry]["StudyInstanceUID"] != "undefined" && seriesObject[entry]["StudyInstanceUID"].length > 0 && !isValidUIDString(seriesObject[entry]["StudyInstanceUID"])) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["StudyInstanceUID"]] = [entry, seriesObject[entry]["StudyInstanceUID"], "StudyInstanceUID does not have numbers and dots only also no number is allowed to start with '0'."]
+		}
+        if (typeof seriesObject[entry]["SeriesInstanceUID"] != "undefined" && seriesObject[entry]["SeriesInstanceUID"].length > 0 && !isValidUIDString(seriesObject[entry]["SeriesInstanceUID"])) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "SeriesInstanceUID does not have numbers and dots only also no number is allowed to start with '0'."]
+		}
+        if (typeof seriesObject[entry]["SOPInstanceUID"] != "undefined" && seriesObject[entry]["SOPInstanceUID"].length > 0 && !isValidUIDString(seriesObject[entry]["SOPInstanceUID"])) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SOPInstanceUID"]] = [entry, seriesObject[entry]["SOPInstanceUID"], "SOPInstanceUID does not have numbers and dots only also no number is allowed to start with '0'."]
 		}
 	}
 	jQuery('#icon-unique-identifiers').children().remove();
