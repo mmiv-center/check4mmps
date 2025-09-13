@@ -194,6 +194,10 @@ function validate(seriesObject) {
 	var failedList = {};
 	for (var entry in seriesObject) {
 		if (typeof seriesObject[entry]["SeriesDescription"] == "undefined" || seriesObject[entry]["SeriesDescription"].length == 0) {
+			// in many cases the PR objects will have a missing SeriesDescription, ignore any modality PR here (not used by MMPS)
+			if (typeof seriesObject[entry]["Modality"] != "undefined" && seriesObject[entry]["Modality"] == "PR") {
+				continue; // ignore these cases
+			}
 			inspect = false;
 			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "SeriesDescription missing"]
 		}
