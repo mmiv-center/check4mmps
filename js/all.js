@@ -137,6 +137,7 @@ function validate(seriesObject) {
 	var inspect = true;
 	var failedList = {};
 	for (var entry in seriesObject) {
+		// TODO: all errors should be added together into the list and reported as one
 		if (typeof seriesObject[entry]["Manufacturer"] == "undefined" || seriesObject[entry]["Manufacturer"].length == 0) {
 			inspect = false;
 			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "Manufacturer missing"]
@@ -144,6 +145,10 @@ function validate(seriesObject) {
 		if (typeof seriesObject[entry]["ManufacturerModelName"] == "undefined" || seriesObject[entry]["ManufacturerModelName"].length == 0) {
 			inspect = false;
 			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "ManufacturerModelName missing"]
+		}
+		if (typeof seriesObject[entry]["MagneticFieldStrength"] == "undefined" || seriesObject[entry]["MagneticFieldStrength"].length == 0) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "MagneticFieldStrength missing"]
 		}
 	}
 	jQuery('#icon-manufacturer').children().remove();
