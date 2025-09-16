@@ -112,7 +112,9 @@ function validate(seriesObject) {
 			if (typeof seriesObject[entry]["CSAImageHeaderType"] != "undefined" && typeof seriesObject[entry]["CSAImageHeaderType"] != "string") {
 				inspect = false;
 				failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "CSAImageHeaderType should be string, anonymizer broke value representation"]
-			}			
+			}
+			// In some rare cases the types for the private tags are wrong - converted to explicit without a proper private.dic. The above
+			// should capture these cases. But there are more requirements like OB for the base64 coded info fields.
 		}
 	}
 	jQuery('#icon-csa').children().remove();
