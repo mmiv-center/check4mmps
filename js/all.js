@@ -225,6 +225,31 @@ function validate(seriesObject) {
 		jQuery('#collapseSix').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
 	}
 
+	// check for ImageType (should contain ORIGINAL)
+	var inspect = true;
+	var failedList = {};
+	for (var entry in seriesObject) {
+		if (typeof seriesObject[entry]["ImageType"] == "undefined" || seriesObject[entry]["ImageType"].length == 0 || seriesObject[entry]["ImageType"].toUpperCase().indexOf("ORIGINAL") == -1) {
+			inspect = false;
+			failedList[entry+seriesObject[entry]["SeriesInstanceUID"]] = [entry, seriesObject[entry]["SeriesInstanceUID"], "ImageType is missing or does not contain ORIGINAL"]
+		}
+	}
+	jQuery('#icon-image-type').children().remove();
+	jQuery('#icon-image-type').text("");
+	jQuery('#icon-image-type').append( (inspect?oked:failed) );
+	jQuery('#collapseSeven').find('div.failed_list').children().remove();
+	if (Object.keys(failedList).length == 0) {
+		jQuery('#collapseSeven').find('div.failed_list').append("<div class=\"alert alert-success\" role=\"alert\">All series appear to be ok</div>");
+	} else {
+		var issues_found = "";
+		var keys = Object.keys(failedList);
+		for (var i = 0; i < keys.length; i++) {
+			var entry = failedList[keys[i]][0];
+			issues_found += "<li><span>PatientID: " + seriesObject[entry]["PatientID"] + "</span> <span>SeriesNumber: " + seriesObject[entry]["SeriesNumber"] + "</span>" + " <br><span>Reason: " + failedList[keys[i]][2] + "</li>";
+		}
+		jQuery('#collapseSeven').find('div.failed_list').append("<ul>" + issues_found + "</ul>");
+	}
+
 
 }
 
@@ -245,6 +270,7 @@ function dumpDataSet(dataSet, output) {
 		"x0008103e": "SeriesDescription", // needed
 		"x0020000d": "StudyInstanceUID", // needed
 		"x00080018": "SOPInstanceUID", // needed
+		"x00080008": "ImageType",      // needed
 		"x00080020": "StudyDate",        // needed
 		"x00080030": "StudyTime",
 		"x00200010": "StudyID",
@@ -391,6 +417,9 @@ function dumpDataSet(dataSet, output) {
 							if (validElementNames[propertyName] == "StudyDate") {
 								captureValues["StudyDate"] = str;
 							}
+							if (validElementNames[propertyName] == "ImageType") {
+								captureValues["ImageType"] = str;
+							}
 							if (validElementNames[propertyName] == "PatientID") {
 								captureValues["PatientID"] = str;
 							}
@@ -466,6 +495,7 @@ function dumpDataSet(dataSet, output) {
 				"PatientID": captureValues["PatientID"], 
 				"PatientName": captureValues["PatientName"], 
 				"StudyDate": captureValues["StudyDate"],
+				"ImageType": captureValues["ImageType"],
 				"Manufacturer": captureValues["Manufacturer"],
 				"ManufacturerModelName": captureValues["ManufacturerModelName"],
 				"SeriesInstanceUID": captureValues["SeriesInstanceUID"],
